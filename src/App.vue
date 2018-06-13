@@ -1,17 +1,16 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <MenuMiTouchStandard/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MenuMiTouchStandard from './components/menu-mi-touch-standard.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+      MenuMiTouchStandard
   }
 }
 </script>

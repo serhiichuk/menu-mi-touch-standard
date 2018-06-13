@@ -1,13 +1,18 @@
 {
   "name": "menu-mi-touch-standard",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.1",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build --target lib --name menu-mi-touch-standard ./src/components/menu-mi-touch-standard.vue"
+  },
+  "main": "src/components/menu-mi-touch-standard.vue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serhiichuk/vue-json-to-html.git"
   },
   "dependencies": {
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "vue-awesome-swiper": "^3.1.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",
