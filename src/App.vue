@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import MenuMiTouchStandard from './components/menu-mi-touch-standard.vue'
+import MenuMiTouchStandard from './components/mt-menu.vue'
 
 export default {
   name: 'app',
