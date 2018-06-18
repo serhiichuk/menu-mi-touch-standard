@@ -1,5 +1,5 @@
 <template>
-  <section id="mt-menu">
+  <section class="mt-menu">
     <!-- Home btn -->
     <div class="btn-main-slide" @click="navigateTo(_mainSlide.id)" v-html="icons.home"></div>
 
@@ -24,10 +24,14 @@
 
     <!-- Popup buttons section -->
     <div class="functional-buttons">
-      <div v-for="btn in functionalButtons" :key="btn.name"
-           :class="`btn-${btn.name}`"
-           v-html="icons[btn.name]"
-           @click="btn.cb"></div>
+      <div v-for="(cb, key) in functionalButtons" :key="key"
+           :class="{
+            [`btn-${key}`]: true,
+            active: isActiveFuncBtn(key),
+            disabled: isDisabledFuncBtn(key)}"
+           v-html="icons[key]"
+           @click="cb(key)"
+      ></div>
     </div>
   </section>
 </template>
@@ -35,7 +39,7 @@
 <script>
   import 'swiper/dist/css/swiper.css'
   import {swiper, swiperSlide} from 'vue-awesome-swiper'
-  import icons from '../components/svg-icons'
+  import icons from '@/components/svg-icons'
 
   export default {
     name: "mt-menu",
@@ -60,22 +64,24 @@
       },
 
       btnReferences: {
-        type: Object,
+        type: Function
       },
       btnResearchDesign: {
-        type: Object,
+        type: Function
       },
       btnInstructions: {
-        type: Object
+        type: Function
       },
       btnFaq: {
-        type: Object
+        type: Function
       }
     },
+
     components: {
       swiper,
       swiperSlide
     },
+
     data() {
       return {
         icons,
@@ -85,7 +91,8 @@
           spaceBetween: 0,
           slidesOffsetAfter: 50,
           roundLengths: true
-        }
+        },
+        instructions: false
       }
     },
 
@@ -130,31 +137,19 @@
       // Functional Buttons
       functionalButtons() {
         return {
-          'references': this.btnReferences || {
-            name: 'references',
-            cb: () => {
-              console.log('references')
-            }
-          },
-          'research-design': this.btnResearchDesign || {
-            name: 'research-design',
-            cb: () => {
-              console.log('research-')
-            }
-          },
-          'instructions': this.btnInstructions || {
-            name: 'instructions',
-            cb: () => {
-              console.log('instructions')
-            }
-          },
-          'faq': this.btnFaq || {
-            name: 'faq',
-            cb: () => {
-              console.log('faq')
-            }
-          }
+          'references': this.btnReferences || this.popupOpen,
+          'research-design': this.btnResearchDesign || this.popupOpen,
+          'instructions': this.btnInstructions || this.popupOpen,
+          'faq': this.btnFaq || this.navigateTo('slide-faq')
         }
+      },
+
+      activePopup() {
+        return this.$store.state['mi-touch'].activePopup
+      },
+
+      popupData() {
+        return this.$store.state.currentData.popup
       }
     },
 
@@ -171,7 +166,8 @@
 
         this.swiperSlides.slideTo(currentSlideIndex());
       }
-    },
+    }
+    ,
 
     methods: {
       isCurrentSlide(id) {
@@ -179,6 +175,29 @@
       },
       isCurrentFlow(id) {
         return id.match(new RegExp(`slide-${this._currentFlow}`))
+      },
+      popupOpen(popup) {
+        this.$store.commit('mi-touch/POPUP_SHOW', popup);
+      },
+
+      isActiveFuncBtn(btn) {
+        switch (btn) {
+          case 'faq':
+            return this._currentFlow === 'faq';
+          default:
+            return this.activePopup === btn
+        }
+      },
+
+      isDisabledFuncBtn(btn) {
+        switch (btn) {
+          case 'faq':
+            return false;
+          case 'instructions':
+            return false;
+          default:
+            return !(this.popupData[btn] && Object.keys(this.popupData[btn]).length)
+        }
       }
     },
 
@@ -204,16 +223,14 @@
   $menu_links_flow_height: 40px;
   $menu_links_flow_font_size: 14px;
 
-  #mt-menu {
+  .mt-menu {
     position: absolute;
     bottom: 0;
     left: 0;
+    z-index: 10;
 
     height: $menu_height;
     width: 100%;
-
-    display: flex;
-    justify-content: space-between;
 
     font-family: sans-serif;
 
@@ -243,6 +260,9 @@
 
   .btn-main-slide {
     z-index: 2;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 
     display: flex;
     align-items: center;
@@ -354,6 +374,9 @@
   // Menu right section
   .functional-buttons {
     padding-left: 20px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
 
     display: flex;
     align-items: center;
