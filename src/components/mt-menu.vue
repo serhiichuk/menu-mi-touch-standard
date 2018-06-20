@@ -24,13 +24,29 @@
 
     <!-- Popup buttons section -->
     <div class="functional-buttons">
-      <div v-for="(cb, key) in functionalButtons" :key="key"
-           :class="{
-            [`btn-${key}`]: true,
-            active: isActiveFuncBtn(key),
-            disabled: isDisabledFuncBtn(key)}"
-           v-html="icons[key]"
-           @click="cb(key)"
+
+      <div class="btn-references"
+           :class="getPopupBtnClasses('references')"
+           v-html="icons.references"
+           @click="popupOpen('references')"
+      ></div>
+
+      <div class="btn-research-design"
+           :class="getPopupBtnClasses('research-design')"
+           v-html="icons['research-design']"
+           @click="popupOpen('research-design')"
+      ></div>
+
+      <div class="btn-instructions"
+           v-html="icons.instructions"
+           :class="{active: activePopup === 'instructions'}"
+           @click="_btnInstrCb"
+      ></div>
+
+      <div class="btn-faq"
+           v-html="icons.faq"
+           :class="{active: currentFlow === 'faq'}"
+           @click="_btnFaqCb"
       ></div>
     </div>
   </section>
@@ -44,17 +60,11 @@
   export default {
     name: "mt-menu",
     props: {
-      structure: {
-        type: Array,
-      },
       mainSlide: {
         type: Object,
       },
       currentSlide: {
         type: Object,
-      },
-      currentFlow: {
-        type: String,
       },
       slides: {
         type: Array,
@@ -63,17 +73,12 @@
         type: Array
       },
 
-      btnReferences: {
-        type: Function
+      btnInstrCb: {
+        type: Function,
       },
-      btnResearchDesign: {
-        type: Function
-      },
-      btnInstructions: {
-        type: Function
-      },
-      btnFaq: {
-        type: Function
+
+      btnFaqCb: {
+        type: Function,
       }
     },
 
@@ -97,32 +102,40 @@
     },
 
     computed: {
-      // Props defaults
-      _structure() {
-        return this.structure || this.$store.getters.structure
+      structure() {
+        return this.$store.getters.structure
       },
 
+      // Props defaults start from '_'
       _mainSlide() {
-        return this.mainSlide || this._structure[0]
+        return this.mainSlide || this.structure[0]
       },
 
       _currentSlide() {
         return this.currentSlide || this.$store.state.currentSlide
       },
 
-      _currentFlow() {
-        return this.currentFlow || this._currentSlide.id.replace('slide-', '').split('_')[0];
+      currentFlow() {
+        return this._currentSlide.id.replace('slide-', '').split('_')[0];
       },
 
       _flows() {
-        return this.flows || this._structure.filter(sl => /\d_1$/.test(sl.id));
+        return this.flows || this.structure.filter(sl => /\d_1$/.test(sl.id));
       },
 
       _slides() {
-        return this.slides || this._structure.filter(sl => {
-          const regex = new RegExp(`slide-${this._currentFlow}`);
+        return this.slides || this.structure.filter(sl => {
+          const regex = new RegExp(`slide-${this.currentFlow}`);
           return regex.test(sl.id)
         })
+      },
+
+      _btnInstrCb() {
+        return this.btnInstrCb || (() => this.popupOpen('instructions'))
+      },
+
+      _btnFaqCb() {
+        return this.btnFaqCb || (() => this.navigateTo('slide-faq'))
       },
 
       // Swiper instances
@@ -134,22 +147,16 @@
         return this.$refs.swiperFlows.swiper
       },
 
-      // Functional Buttons
-      functionalButtons() {
-        return {
-          'references': this.btnReferences || this.popupOpen,
-          'research-design': this.btnResearchDesign || this.popupOpen,
-          'instructions': this.btnInstructions || this.popupOpen,
-          'faq': this.btnFaq || this.navigateTo('slide-faq')
-        }
-      },
-
       activePopup() {
         return this.$store.state['mi-touch'].activePopup
       },
 
       popupData() {
-        return this.$store.state.currentData.popup
+        try {
+          return this.$store.state.currentData.popup
+        } catch (e) {
+          console.error(e);
+        }
       }
     },
 
@@ -174,37 +181,28 @@
         return id === this._currentSlide.id
       },
       isCurrentFlow(id) {
-        return id.match(new RegExp(`slide-${this._currentFlow}`))
+        return id.match(new RegExp(`slide-${this.currentFlow}`))
       },
+
+      getPopupBtnClasses(btn) {
+        return {
+          active: this.activePopup === btn,
+          disabled: !(this.popupData[btn] && Object.keys(this.popupData[btn]).length)
+        }
+      },
+
       popupOpen(popup) {
         this.$store.commit('mi-touch/POPUP_SHOW', popup);
       },
-
-      isActiveFuncBtn(btn) {
-        switch (btn) {
-          case 'faq':
-            return this._currentFlow === 'faq';
-          default:
-            return this.activePopup === btn
-        }
-      },
-
-      isDisabledFuncBtn(btn) {
-        switch (btn) {
-          case 'faq':
-            return false;
-          case 'instructions':
-            return false;
-          default:
-            return !(this.popupData[btn] && Object.keys(this.popupData[btn]).length)
-        }
-      }
     },
 
     mounted() {
-      ['.btn-main-slide', '.swiper-wrapper > *', '.functional-buttons > *'].forEach(selector => {
-        document.querySelectorAll(selector).forEach(el => el.setAttribute('data-prevent-tap', 'true'))
-      })
+      [
+        '.btn-main-slide',
+        '.swiper-wrapper > *',
+        '.functional-buttons > *'
+      ].forEach(selector => document.querySelectorAll(selector)
+        .forEach(el => el.setAttribute('data-prevent-tap', 'true')))
     }
   }
 </script>

@@ -6,7 +6,7 @@ const VueClmHelperMiTouch = {};
 VueClmHelperMiTouch.install = function (Vue, store, options) {
 
   if (!store) {
-    throw new Error("Please provide vuex store.");
+    throw new Error(`Please provide vuex store: "Vue.use(MiTouchPlugin, store)";`);
   }
 
   const state = {

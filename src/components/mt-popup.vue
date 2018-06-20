@@ -11,7 +11,7 @@
 
       <json-to-html v-else-if="activePopup" :json="_dataPopup" :rootClassName="`popup-${activePopup}`">
         <div class="btn-popup-hide" @click="popupClose"></div>
-        <slot/>
+        <slot :name="activePopup"/>
       </json-to-html>
 
     </transition>
@@ -111,6 +111,7 @@
 </script>
 
 <style lang="scss" scoped>
+
   .mt-popup {
     position: absolute;
     top: 0;
@@ -129,6 +130,10 @@
       background-color: rgba(17, 29, 48, 0.6);
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
     > * {
       position: absolute;
       bottom: 80px;
@@ -137,19 +142,72 @@
     }
   }
 
+  .popup-references, .popup-research-design {
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      right: 0;
+
+      border-style: solid;
+      border-width: 16px 0 0 16px;
+      border-color: #fff transparent transparent transparent;
+    }
+
+    .btn-popup-hide {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      z-index: 2;
+
+      width: 20px;
+      height: 20px;
+
+      &:before, &:after {
+        content: '';
+
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -.75px;
+        margin-top: -30%;
+        transform-origin: center;
+        width: 1.5px;
+        height: 60%;
+        background-color: #000;
+        border-radius: 1.5px;
+      }
+
+      &:before {
+        transform: rotate(-45deg);
+      }
+
+      &:after {
+        transform: rotate(45deg);
+      }
+
+      &:active {
+        opacity: .5;
+      }
+    }
+  }
+
   .popup-references {
-    width: 250px;
+    width: 320px;
     min-height: 440px;
     max-height: 520px;
 
     padding: 32px;
     display: flex;
     flex-flow: column;
+  }
 
-    .popup-close, &:after {
-      left: 50%;
-      transform: translateX(-50%);
-    }
+  .popup-research-design {
+    min-height: 440px;
+    max-height: 520px;
+    min-width: 530px;
+
+    padding: 28px;
   }
 
   .PDF-section {
