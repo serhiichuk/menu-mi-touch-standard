@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-menu">
+  <section class="mt-menu" v-show="_currentSlide.id !== _mainSlide.id">
     <!-- Home btn -->
     <div class="btn-main-slide" @click="navigateTo(_mainSlide.id)" v-html="icons.home"></div>
 
