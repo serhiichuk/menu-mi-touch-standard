@@ -1,6 +1,6 @@
 {
   "name": "vue-clm-helper-mi-touch",
-  "version": "0.0.1-beta-3",
+  "version": "0.0.1-beta-4",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
