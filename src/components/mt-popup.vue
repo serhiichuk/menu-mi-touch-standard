@@ -129,6 +129,7 @@
 
     * {
       box-sizing: border-box;
+      font-family: 'Diaria Sans Pro', sans-serif;
     }
 
     > * {

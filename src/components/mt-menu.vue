@@ -240,6 +240,8 @@
 
     > * {
       height: 100%;
+
+      font-family: 'Diaria Sans Pro', sans-serif;
     }
 
     &:before, &:after {
