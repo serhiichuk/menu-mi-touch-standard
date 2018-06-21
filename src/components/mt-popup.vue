@@ -54,9 +54,6 @@
       }
     },
     computed: {
-      currentSlide() {
-        return this.$store.state.currentSlide
-      },
       activePopup() {
         return this.$store.state['mi-touch'].activePopup
       },
