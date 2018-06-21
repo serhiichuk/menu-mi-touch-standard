@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-menu" v-show="_currentSlide.id !== _mainSlide.id">
+  <section class="mt-menu" v-show="isVisibleMenu">
     <!-- Home btn -->
     <div class="btn-main-slide" @click="navigateTo(_mainSlide.id)" v-html="icons.home"></div>
 
@@ -157,11 +157,17 @@
         } catch (e) {
           console.error(e);
         }
+      },
+
+      isVisibleMenu() {
+        return this.currentFlow !== 'main' && (this._currentSlide !== this._mainSlide)
       }
     },
 
     watch: {
       _currentSlide() {
+        if (this._slides.length < 5) return false;
+
         const currentSlideIndex = () => {
           let result;
           this._slides.forEach((sl, index) => {
