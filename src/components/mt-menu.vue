@@ -8,7 +8,7 @@
       <swiper :options="swiperOption" ref="swiperSlides" class="slides">
         <swiper-slide v-for="sl in _slides" :key="sl.id"
                       :class="{active: isCurrentSlide(sl.id)}">
-          <div v-html="sl.id" @click="navigateTo(sl.id)"></div>
+          <div v-html="sl.name" @click="navigateTo(sl.id)"></div>
         </swiper-slide>
       </swiper>
 
