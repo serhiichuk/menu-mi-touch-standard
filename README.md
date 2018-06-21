@@ -90,22 +90,45 @@ Plugin register components [mt-menu](#mt-menu) and [mt-popup](#mt-popup) globall
 
 For using components, just [include](#usage) it in template.
 
-### mt-menu
-
-**MI Touch menu component with basic functional and styles.**
+MI Touch **Menu** and **Popup** components have basic functional and styles.
 
 Basically, you don't need pass any props, it automatic find `current slide`, `main slide`, `current flow` and `popup text data`.
 
 But, in some cases you can pass following props:
 
-#### Props (mt-menu)
+### Props (mt-menu)
 Prop | Type | Default | Description
   --- | --- | --- |---
-  mainSlide | Object | First slide in [structure](#https://github.com/serhiichuk/vue-cli-plugin-clm-helper#structure) | Object with following keys: `id`, `path`, `name`.
+  mainSlide | Object | `this.structure[0]` | First slide in [structure](#https://github.com/serhiichuk/vue-cli-plugin-clm-helper#structure). Must have following keys: `id`, `path`, `name`.
   currentSlide | Object | `this.$store.state.currentSlide` | Object with following keys: `id`, `path`, `name`.
-  slides | Array | - | Filtered slides from current flow name, will rendering in top list in menu. 
-  flows | Array | - | Filtered slides from each first slide in each flow, will rendering in bottom list in menu. 
+  slides | Array | ``this.structure.filter(sl => new RegExp(`slide-${this.currentFlow}`).test(sl.id))`` | Filtered slides from current flow name, will rendering in top list in menu. 
+  flows | Array | `this.structure.filter(sl => /\d_1$/.test(sl.id));` | Filtered slides from each first slide in each flow, will rendering in bottom list in menu. 
+  btnInstrCb | Function | `() => this.popupOpen('instructions')` | Callback for `Instructions button` 
+  btnFaqCb | Function | `() => this.navigateTo('slide-faq')` | Callback for `FAQ button` 
 
-### mt-popup 
+### Props (mt-popup)
+Prop | Type | Default | Description
+  --- | --- | --- |---
+  dataPopup | Object | `this.$store.state.currentData.popup[this.activePopup]` | Object with text data. Popup DOM three will render with [vue-json-to-html](#https://github.com/serhiichuk/vue-json-to-html) 
+  animation | String | `'fade'` | Name for [transition](https://vuejs.org/v2/guide/transitions.html#Transitioning-Single-Elements-Components) wrapper component. Don't forget to describe custom transition classes
+  instrPath | String | `'media/pdf/instruction.pdf'` | Path to `pdf` file which will open after click on `Instruction Button`, file must contain in `public/${instrPath}`
 
-#### Props (mt-popup)
+Also tou can use [slots](https://vuejs.org/v2/guide/components-slots.html#Named-Slots) to pass some HTML to necessary popup:
+
+```
+<mt-popup>
+  <template slot="references">
+    <h1>Here might be a references title</h1>
+  </template>
+</mt-popup>
+```
+
+or
+
+```
+<mt-popup>
+  <template slot="research-design">
+    <h1>Here might be a research design title</h1>
+  </template>
+</mt-popup>
+```
