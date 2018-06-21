@@ -12,9 +12,7 @@
 - [Store Extending](#store-extending)
 - [Registered components](#registered-components)
   - [mt-menu](#mt-menu)
-    - [props](#props-(mt-menu))
   - [mt-popup](#mt-popup)
-    - [props](#props-(mt-popup))
 
 ## Usage
 Install component to your project:
@@ -96,7 +94,7 @@ Basically, you don't need pass any props, it automatic find `current slide`, `ma
 
 But, in some cases you can pass following props:
 
-### Props (mt-menu)
+### mt-menu
 Prop | Type | Default | Description
   --- | --- | --- |---
   mainSlide | Object | `this.structure[0]` | First slide in [structure](#https://github.com/serhiichuk/vue-cli-plugin-clm-helper#structure). Must have following keys: `id`, `path`, `name`.
@@ -106,7 +104,7 @@ Prop | Type | Default | Description
   btnInstrCb | Function | `() => this.popupOpen('instructions')` | Callback for `Instructions button` 
   btnFaqCb | Function | `() => this.navigateTo('slide-faq')` | Callback for `FAQ button` 
 
-### Props (mt-popup)
+### mt-popup
 Prop | Type | Default | Description
   --- | --- | --- |---
   dataPopup | Object | `this.$store.state.currentData.popup[this.activePopup]` | Object with text data. Popup DOM three will render with [vue-json-to-html](#https://github.com/serhiichuk/vue-json-to-html) 
