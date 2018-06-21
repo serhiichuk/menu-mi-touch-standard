@@ -108,7 +108,7 @@ Prop | Type | Default | Description
 Prop | Type | Default | Description
   --- | --- | --- |---
   dataPopup | Object | `this.$store.state.currentData.popup[this.activePopup]` | Object with text data. Popup DOM three will render with [vue-json-to-html](#https://github.com/serhiichuk/vue-json-to-html) 
-  animation | String | `'fade'` | Name for [transition](https://vuejs.org/v2/guide/transitions.html#Transitioning-Single-Elements-Components) wrapper component. Don't forget to describe custom transition classes
+  animation | String | `'fade'` | Name for [transition wrapper component](https://vuejs.org/v2/guide/transitions.html#Transitioning-Single-Elements-Components). Don't forget to describe custom transition classes
   instrPath | String | `'media/pdf/instruction.pdf'` | Path to `pdf` file which will open after click on `Instruction Button`, file must contain in `public/${instrPath}`
 
 Also tou can use [slots](https://vuejs.org/v2/guide/components-slots.html#Named-Slots) to pass some HTML to necessary popup:
