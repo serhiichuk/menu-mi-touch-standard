@@ -84,11 +84,11 @@ Doing mutations:
 
 ## Registered components
 
-Plugin register components [mt-menu](#mt-menu) and [mt-popup](#mt-popup) globally.
+Plugin register components `mt-menu` and `mt-popup` globally.
 
 For using components, just [include](#usage) it in template.
 
-MI Touch **Menu** and **Popup** components have basic functional and styles.
+MI Touch components have basic functional and styles.
 
 Basically, you don't need pass any props, it automatic find `current slide`, `main slide`, `current flow` and `popup text data`.
 
