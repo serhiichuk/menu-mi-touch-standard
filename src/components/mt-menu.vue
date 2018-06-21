@@ -16,7 +16,7 @@
       <swiper :options="swiperOption" ref="swiperFlows" class="flows">
         <swiper-slide v-for="sl in _flows" :key="sl.id"
                       :class="{active: isCurrentFlow(sl.id)}">
-          <div v-html="sl.name" @click="navigateTo(sl.id)"></div>
+          <div v-html="sl.flowName || sl.name" @click="navigateTo(sl.id)"></div>
         </swiper-slide>
       </swiper>
     </div>
