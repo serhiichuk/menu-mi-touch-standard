@@ -79,7 +79,16 @@
 
       btnFaqCb: {
         type: Function,
-      }
+      },
+
+      slidesToActiveAutoTransform: {
+        type: Number,
+        default: 6
+      },
+      flowsToActiveAutoTransform: {
+        type: Number,
+        default: 4
+      },
     },
 
     components: {
@@ -106,7 +115,7 @@
         return this.$store.getters.structure
       },
 
-      // Props defaults start from '_'
+      // Props default values start's from '_'
       _mainSlide() {
         return this.mainSlide || this.structure[0]
       },
@@ -147,6 +156,7 @@
         return this.$refs.swiperFlows.swiper
       },
 
+      // Popup
       activePopup() {
         return this.$store.state['mi-touch'].activePopup
       },
@@ -155,7 +165,7 @@
         try {
           return this.$store.state.currentData.popup
         } catch (e) {
-          console.error(e);
+          console.error(`Not find "popup" key in current data:\n${e}`);
         }
       },
 
@@ -166,23 +176,44 @@
 
     watch: {
       _currentSlide() {
-        if (this._slides.length < 5) return false;
-
-        const currentSlideIndex = () => {
-          let result;
-          this._slides.forEach((sl, index) => {
-            if (this._currentSlide.id === sl.id) result = index
-          });
-
-          return result;
-        };
-
-        this.swiperSlides.slideTo(currentSlideIndex());
+        // Auto transform to active slide position, call after ready '_currentSlide'
+        this.setSlidesActivePosition();
+        this.setFlowsActivePosition();
       }
-    }
-    ,
+    },
 
     methods: {
+      setSlidesActivePosition() {
+        if (this._slides.length >= this.slidesToActiveAutoTransform) {
+          const currentSlideIndex = () => {
+            let result = 0;
+            this._slides.forEach((sl, index) => {
+              if (this._currentSlide.id === sl.id) result = index
+            });
+
+            return result;
+          };
+
+          this.swiperSlides.slideTo(currentSlideIndex());
+        }
+      },
+
+      setFlowsActivePosition() {
+        if (this._flows.length >= this.flowsToActiveAutoTransform) {
+          const currentFlowIndex = () => {
+            let result = 0;
+            this._flows.forEach((sl, index) => {
+              const regex = new RegExp(`^slide-${this.currentFlow}`);
+              if (regex.test(sl.id)) result = index
+            });
+
+            return result;
+          };
+
+          this.swiperFlows.slideTo(currentFlowIndex());
+        }
+      },
+
       isCurrentSlide(id) {
         return id === this._currentSlide.id
       },
@@ -199,16 +230,18 @@
 
       popupOpen(popup) {
         this.$store.commit('mi-touch/POPUP_SHOW', popup);
-      },
+      }
     },
 
     mounted() {
-      [
+      [ // Set dataPreventTap="true" to following selectors:
         '.btn-main-slide',
         '.swiper-wrapper > *',
         '.functional-buttons > *'
-      ].forEach(selector => document.querySelectorAll(selector)
-        .forEach(el => el.setAttribute('data-prevent-tap', 'true')))
+      ].forEach(selector => {
+        Array.from(document.querySelectorAll(selector))
+          .forEach(el => el.setAttribute('data-prevent-tap', 'true'))
+      })
     }
   }
 </script>

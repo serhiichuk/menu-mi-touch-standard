@@ -6539,9 +6539,9 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"
 
-vue-json-to-html@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/vue-json-to-html/-/vue-json-to-html-0.1.6.tgz#79931e0e13247cc649aee201b04e2a30d285ae6f"
+vue-json-to-html@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/vue-json-to-html/-/vue-json-to-html-0.1.7.tgz#4902e050a3b86df439232e3cba6f686bf3b29cd4"
   dependencies:
     vue "^2.5.16"
 

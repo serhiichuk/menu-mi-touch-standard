@@ -103,6 +103,8 @@ Prop | Type | Default | Description
   flows | Array | `this.structure.filter(sl => /\d_1$/.test(sl.id));` | Filtered slides from each first slide in each flow, will rendering in bottom list in menu. 
   btnInstrCb | Function | `() => this.popupOpen('instructions')` | Callback for `Instructions button` 
   btnFaqCb | Function | `() => this.navigateTo('slide-faq')` | Callback for `FAQ button` 
+  slidesToActiveAutoTransform | Number | `6` | If `slidesToActiveAutoTransform` >= `slides.length` then current slide list item will be moved to left side.
+  flowsToActiveAutoTransform | Number | `6` | If `flowsToActiveAutoTransform` >= `flows.length` then current slide list item will be moved to left side.
 
 ### mt-popup
 Prop | Type | Default | Description
@@ -111,8 +113,10 @@ Prop | Type | Default | Description
   animation | String | `'fade'` | Name for [transition wrapper component](https://vuejs.org/v2/guide/transitions.html#Transitioning-Single-Elements-Components). Don't forget to describe custom transition classes
   instrPath | String | `'media/pdf/instruction.pdf'` | Path to `pdf` file which will open after click on `Instruction Button`, file must contain in `public/${instrPath}`
 
-Also tou can use [slots](https://vuejs.org/v2/guide/components-slots.html#Named-Slots) to pass some HTML to necessary popup:
+Also tou can use [named slots](https://vuejs.org/v2/guide/components-slots.html#Named-Slots) to pass some HTML to necessary popup:
 
+
+Slot content bellow will be added to actual popup block:
 ```
 <mt-popup>
   <template slot="references">
@@ -121,12 +125,18 @@ Also tou can use [slots](https://vuejs.org/v2/guide/components-slots.html#Named-
 </mt-popup>
 ```
 
-or
-
 ```
 <mt-popup>
   <template slot="research-design">
     <h1>Here might be a research design title</h1>
+  </template>
+</mt-popup>
+```
+
+```
+<mt-popup>
+  <template slot="instructions">
+    <section>Here might be a instructions section</section>
   </template>
 </mt-popup>
 ```
