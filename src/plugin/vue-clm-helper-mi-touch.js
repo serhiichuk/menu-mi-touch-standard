@@ -1,36 +1,41 @@
 import MtMenu from '@/components/mt-menu'
 import MtPopup from '@/components/mt-popup'
 
-const VueClmHelperMiTouch = {};
+const VueClmHelperMiTouch = {
+  install(Vue, store, options) {
 
-VueClmHelperMiTouch.install = function (Vue, store, options) {
-
-  if (!store) {
-    throw new Error(`Please provide vuex store: "Vue.use(MiTouchPlugin, store)";`);
-  }
-
-  const state = {
-    activePopup: ''
-  };
-
-  const mutations = {
-    POPUP_SHOW(state, popupName) {
-      state.activePopup = popupName;
-    },
-
-    POPUP_HIDE(state) {
-      state.activePopup = ''
+    if (!store) {
+      throw new Error(`Please provide vuex store: "Vue.use(MiTouchPlugin, store)";`);
     }
-  };
 
-  store.registerModule('mi-touch', {
-    namespaced: true,
-    state,
-    mutations
-  });
+    const state = {
+      activePopup: ''
+    };
 
-  Vue.component(MtMenu.name, MtMenu);
-  Vue.component(MtPopup.name, MtPopup);
+    const mutations = {
+      POPUP_SHOW(state, popupName) {
+        state.activePopup = popupName;
+      },
+
+      POPUP_HIDE(state) {
+        state.activePopup = ''
+      }
+    };
+
+    store.registerModule('mi-touch', {
+      namespaced: true,
+      state,
+      mutations
+    });
+
+    Vue.component(MtMenu.name, MtMenu);
+    Vue.component(MtPopup.name, MtPopup);
+  }
 };
+
+// Automatic installation if Vue has been added to the global scope.
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(VueClmHelperMiTouch)
+}
 
 export default VueClmHelperMiTouch;
