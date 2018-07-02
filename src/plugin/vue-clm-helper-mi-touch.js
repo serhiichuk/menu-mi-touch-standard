@@ -31,7 +31,6 @@ VueClmHelperMiTouch.install = function (Vue, store, options) {
 
   Vue.component(MtMenu.name, MtMenu);
   Vue.component(MtPopup.name, MtPopup);
-
 };
 
 export default VueClmHelperMiTouch;
