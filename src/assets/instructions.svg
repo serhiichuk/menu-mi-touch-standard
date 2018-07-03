@@ -1,0 +1,12 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    x="0px" y="0px" width="34px" height="34px"
+    viewBox="0 0 34 34"
+    xml:space="preserve">
+    <g class="menu-icon-svg research-design">
+      <circle cx="16.75" cy="16.75" r="16.25"/>
+      <polygon points="26.25,24.782 16.75,24.782 7.25,24.782 7.25,9.407 16.75,9.407 26.25,9.407"/>
+      <line x1="16.75" y1="9.407" x2="16.75" y2="24.782"/>
+      <polygon points="12.936,13.75 11.436,14.75 9.936,13.75 9.936,9.583 12.936,9.583"/>
+    </g>
+  </svg>

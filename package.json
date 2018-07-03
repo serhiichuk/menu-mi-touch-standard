@@ -1,11 +1,10 @@
 {
   "name": "vue-clm-helper-mi-touch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build:dev": "vue-cli-service build --target lib ./src/plugin/vue-clm-helper-mi-touch.js --watch",
-    "build:prod": "vue-cli-service build --target lib ./src/plugin/vue-clm-helper-mi-touch.js"
+    "dev": "vue-cli-service build --target lib ./src/plugin/vue-clm-helper-mi-touch.js --watch",
+    "build": "vue-cli-service build --target lib ./src/plugin/vue-clm-helper-mi-touch.js"
   },
   "files": [
     "dist/*.js"
@@ -15,13 +14,14 @@
   "dependencies": {
     "vue": "^2.5.16",
     "vue-awesome-swiper": "^3.1.3",
-    "vue-json-to-html": "^0.1.7"
+    "vue-json-to-html": "^0.1.8"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-rc.3",
     "@vue/cli-service": "^3.0.0-rc.3",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
+    "vue-svg-loader": "^0.5.0",
     "vue-template-compiler": "^2.5.16"
   },
   "postcss": {
