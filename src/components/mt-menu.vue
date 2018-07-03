@@ -1,7 +1,9 @@
 <template>
   <section class="mt-menu" v-show="isVisibleMenu">
     <!-- Home btn -->
-    <div class="btn-main-slide" @click="navigateTo(_mainSlide.id)" v-html="icons.home"></div>
+    <div class="btn-main-slide" @click="navigateTo(_mainSlide.id)">
+      <icon-home/>
+    </div>
 
     <div class="nav-links">
       <!-- Slides Links -->
@@ -27,27 +29,30 @@
 
       <div class="btn-references"
            :class="getPopupBtnClasses('references')"
-           v-html="icons.references"
-           @click="popupOpen('references')"
-      ></div>
+           @click="popupOpen('references')">
+        <icon-references/>
+      </div>
 
       <div class="btn-research-design"
            :class="getPopupBtnClasses('research-design')"
-           v-html="icons['research-design']"
            @click="popupOpen('research-design')"
-      ></div>
+      >
+        <icon-research-design/>
+      </div>
 
       <div class="btn-instructions"
-           v-html="icons.instructions"
            :class="{active: activePopup === 'instructions'}"
            @click="_btnInstrCb"
-      ></div>
+      >
+        <icon-instructions/>
+      </div>
 
       <div class="btn-faq"
-           v-html="icons.faq"
            :class="{active: currentFlow === 'faq'}"
            @click="_btnFaqCb"
-      ></div>
+      >
+        <icon-faq/>
+      </div>
     </div>
   </section>
 </template>
@@ -55,7 +60,11 @@
 <script>
   import 'swiper/dist/css/swiper.css'
   import {swiper, swiperSlide} from 'vue-awesome-swiper'
-  import icons from '@/components/svg-icons'
+  import iconHome from '../assets/home.svg'
+  import iconReferences from '../assets/references.svg'
+  import iconResearchDesign from '../assets/research-design.svg'
+  import iconInstructions from '../assets/instructions.svg'
+  import iconFaq from '../assets/faq.svg'
 
   export default {
     name: "mt-menu",
@@ -93,12 +102,16 @@
 
     components: {
       swiper,
-      swiperSlide
+      swiperSlide,
+      iconHome,
+      iconReferences,
+      iconResearchDesign,
+      iconInstructions,
+      iconFaq
     },
 
     data() {
       return {
-        icons,
         swiperOption: {
           slidesPerView: 'auto',
           paginationClickable: true,

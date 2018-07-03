@@ -1,8 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-    x="0px" y="0px"
-    viewBox="0 0 29 31.2"
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    x="0px" y="0px" width="34px" height="34px"
+    viewBox="0 0 34 34"
     xml:space="preserve">
-    <polyline points="0.4,15.1 14.4,0.7 28.7,14.6 	"/>
-    <rect x="8.7" y="15.1" width="11.1" height="15.6"/>
-    <polyline points="26.4,12.4 26.4,30.7 2.5,30.7 2.5,12.9"/>
+    <g class="menu-icon-svg references-svg">
+      <circle cx="16.75" cy="16.75" r="16.25"/>
+      <polygon points="20.75,8.125 9.375,8.125 9.375,25.375 24.125,25.375 24.125,11.5"/>
+      <polyline points="20.75,8.125 20.75,11.75 24.125,11.75"/>
+      <line x1="12.25" y1="22.75" x2="21.25" y2="22.75"/>
+      <line x1="12.25" y1="18.75" x2="21.25" y2="18.75"/>
+      <line x1="12.25" y1="14.75" x2="21.25" y2="14.75"/>
+      <line x1="12.25" y1="10.75" x2="21.25" y2="10.75"/>
+    </g>
   </svg>
