@@ -3,11 +3,17 @@
     <transition :name="animation">
 
       <section v-if="activePopup === 'instructions'" :class="`popup-${activePopup}`">
+
         <div class="PDF-section">
           <div class="close-PDF-section" @click="popupClose"></div>
+
           <div class="PDF-container">
-            <object :data="instrPath" type="application/pdf"></object>
+            <object v-if="isExistInst" :data="instrPath" type="application/pdf"></object>
+            <section v-else class="PDF-warning">
+              <h1>Include Your PDF file to <q>public/{{instrPath}}</q></h1>
+            </section>
           </div>
+
         </div>
 
         <slot :name="activePopup"/>
@@ -15,6 +21,7 @@
 
       <json-to-html v-else-if="activePopup" :json="_dataPopup" :rootClassName="`popup-${activePopup}`">
         <div class="btn-popup-hide" @click="popupClose"></div>
+
         <slot :name="activePopup"/>
       </json-to-html>
 
@@ -63,6 +70,15 @@
       },
       _dataPopup() {
         return this.dataPopup || this.$store.state.currentData.popup[this.activePopup] || {}
+      },
+      isExistInst() {
+        const http = new XMLHttpRequest();
+        const url = `${this.instrPath}`;
+
+        http.open('HEAD', url, false);
+        http.send();
+
+        return http.status !== 404;
       }
     },
 
@@ -281,6 +297,30 @@
           opacity: .5;
         }
       }
+    }
+  }
+
+  .PDF-warning {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-color: #fff;
+
+    h1 {
+      margin-top: 10%;
+      font-weight: normal;
+      font-family: 'Diaria Sans Pro', sans-serif;
+      color: #2c3e50;
+
+      text-align: center;
+
+      q {
+        font-weight: bold;
+      }
+
     }
   }
 
