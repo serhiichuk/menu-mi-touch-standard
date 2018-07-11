@@ -117,7 +117,8 @@
           paginationClickable: true,
           spaceBetween: 0,
           slidesOffsetAfter: 50,
-          roundLengths: true
+          roundLengths: true,
+          threshold: 50
         },
         instructions: false
       }
