@@ -13,6 +13,7 @@
 - [Registered components](#registered-components)
   - [mt-menu](#mt-menu)
   - [mt-popup](#mt-popup)
+  - [pdf-popup](#pdf-popup)
 
 ## Usage
 Install component to your project:
@@ -84,7 +85,7 @@ Doing mutations:
 
 ## Registered components
 
-Plugin register components `mt-menu` and `mt-popup` globally.
+Plugin register components `mt-menu`, `mt-popup` and `pdf-popup` globally.
 
 For using components, just [include](#usage) it in template.
 
@@ -95,6 +96,7 @@ Basically, you don't need pass any props, it automatic find `current slide`, `ma
 But, in some cases you can pass following props:
 
 ### mt-menu
+
 Prop | Type | Default | Description
   --- | --- | --- |---
   mainSlide | Object | `this.structure[0]` | First slide in [structure](#https://github.com/serhiichuk/vue-cli-plugin-clm-helper#structure). Must have following keys: `id`, `path`, `name`.
@@ -107,14 +109,62 @@ Prop | Type | Default | Description
   flowsToActiveAutoTransform | Number | `6` | If `flowsToActiveAutoTransform` >= `flows.length` then current slide list item will be moved to left side.
 
 ### mt-popup
+
 Prop | Type | Default | Description
   --- | --- | --- |---
   dataPopup | Object | `this.$store.state.currentData.popup[this.activePopup]` | Object with text data. Popup DOM three will render with [vue-json-to-html](#https://github.com/serhiichuk/vue-json-to-html) 
   animation | String | `'fade'` | Name for [transition wrapper component](https://vuejs.org/v2/guide/transitions.html#Transitioning-Single-Elements-Components). Don't forget to describe custom transition classes
   instrPath | String | `'media/pdf/instruction.pdf'` | Path to `pdf` file which will open after click on `Instruction Button`, file must contain in `public/${instrPath}`
 
-Also tou can use [named slots](https://vuejs.org/v2/guide/components-slots.html#Named-Slots) to pass some HTML to necessary popup:
+### pdf-popup
 
+Prop | Type | Default | Description
+  --- | --- | --- |---
+instrPath | String | `undefined` | Path to `pdf` file which must have `.pdf` end of string.
+closePdf | Function | `() => {this.$store.commit('mi-touch/POPUP_HIDE')}` | Callback for close button in `<pdf-popup/>`. 
+
+Example: Using custom instructions popup.
+
+```
+// App.vue
+<template>
+  <div id="app" :class="[currentSlide.id, clmName]" v-touch:swipe="swipeHandler">
+    ...
+    <mt-menu v-show="true"/>
+    <mt-popup>
+      <template slot="instructions">
+        <button @touchend="openPdf('media/pdf/pdf-1.pdf')">Show PDF 1</button>
+        <button @touchend="openPdf('media/pdf/pdf-2.pdf')">Show PDF 2</button>
+      </template>
+    </mt-popup>
+
+    <transition name="fade">
+      <pdf-popup v-if="activePdf" class="pdf-popup" :instr-path="activePdf" :closePdf="closePdf"/>
+    </transition>
+    ...
+  </div>
+</template>
+
+
+<script>
+  export default {
+    ...
+    data: () => ({
+      activePdf: '',
+    }),
+    methods: {
+      openPdf(pdf) {
+        this.activePdf = pdf;
+      },
+      closePdf() {
+        this.activePdf = '';
+      }
+    },
+  }
+</script>
+```
+
+Also tou can use [named slots](https://vuejs.org/v2/guide/components-slots.html#Named-Slots) to pass some HTML to necessary popup:
 
 Slot content bellow will be added to actual popup block:
 ```
@@ -135,8 +185,10 @@ Slot content bellow will be added to actual popup block:
 
 ```
 <mt-popup>
-  <template slot="instructions">
-    <section>Here might be a instructions section</section>
-  </template>
+ <template slot="instructions">
+   <button @touchend="openPdf('media/pdf/pdf-1.pdf')">Show PDF 1</button>
+   <button @touchend="openPdf('media/pdf/pdf-2.pdf')">Show PDF 2</button>
+ </template>
 </mt-popup>
 ```
+

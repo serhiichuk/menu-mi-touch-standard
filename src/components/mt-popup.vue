@@ -2,23 +2,16 @@
   <section class="mt-popup" :class="{active: activePopup}" @click="popupAction">
     <transition :name="animation">
 
-      <section v-if="activePopup === 'instructions'" :class="`popup-${activePopup}`">
+      <!-- Instructions Popup -->
+      <section v-if="activePopup === 'instructions'"
+               :class="{'popup-instructions': true, 'no-slot-content': !hasInstructionsSlot}">
+        <div class="btn-popup-hide" @click="popupClose" v-if="hasInstructionsSlot"></div>
+        <slot name="instructions" v-if="hasInstructionsSlot"/>
 
-        <div class="PDF-section">
-          <div class="close-PDF-section" @click="popupClose"></div>
-
-          <div class="PDF-container">
-            <object v-if="isExistInst" :data="instrPath" type="application/pdf"></object>
-            <section v-else class="PDF-warning">
-              <h1>Include Your PDF file to <q>public/{{instrPath}}</q></h1>
-            </section>
-          </div>
-
-        </div>
-
-        <slot :name="activePopup"/>
+        <pdf-popup v-else :instr-path="instrPath"/>
       </section>
 
+      <!-- Other Popups -->
       <json-to-html v-else-if="activePopup" :json="_dataPopup" :rootClassName="`popup-${activePopup}`">
         <div class="btn-popup-hide" @click="popupClose"></div>
 
@@ -31,11 +24,13 @@
 
 <script>
   import JsonToHtml from 'vue-json-to-html'
+  import PdfPopup from './pdf-popup'
 
   export default {
     name: "mt-popup",
     components: {
-      JsonToHtml
+      JsonToHtml,
+      PdfPopup,
     },
     props: {
       dataPopup: {
@@ -43,25 +38,29 @@
       },
       animation: {
         type: String,
-        default: 'fade'
+        default: 'fade',
       },
       instrPath: {
         type: String,
-        default: 'media/pdf/instruction.pdf'
-      }
+        default: 'media/pdf/instruction.pdf',
+      },
     },
     data() {
       return {
         popupPosition: {
           references: {
             isCalculated: false,
-            right: ''
+            right: '',
           },
           'research-design': {
             isCalculated: false,
-            right: ''
-          }
-        }
+            right: '',
+          },
+          'instructions': {
+            isCalculated: false,
+            right: '',
+          },
+        },
       }
     },
     computed: {
@@ -71,15 +70,9 @@
       _dataPopup() {
         return this.dataPopup || this.$store.state.currentData.popup[this.activePopup] || {}
       },
-      isExistInst() {
-        const http = new XMLHttpRequest();
-        const url = `${this.instrPath}`;
-
-        http.open('HEAD', url, false);
-        http.send();
-
-        return http.status !== 404;
-      }
+      hasInstructionsSlot() {
+        return !!this.$slots['instructions']
+      },
     },
 
     methods: {
@@ -101,13 +94,13 @@
         };
 
         if (!el.closest('.mt-popup > *')) this.popupClose();
-      }
+      },
     },
 
     watch: {
       activePopup(popup) {
-        if (popup === 'references' || popup === 'research-design') {
-          let {isCalculated, right} = this.popupPosition[popup];
+        if (popup === 'references' || popup === 'research-design' || popup === 'instructions') {
+          let { isCalculated, right } = this.popupPosition[popup];
 
           if (!this.popupPosition[popup].isCalculated) {
             const btnElRect = document.querySelector(`.mt-menu .btn-${popup}`).getBoundingClientRect();
@@ -122,8 +115,8 @@
             document.querySelector(`.mt-popup .popup-${popup}`).setAttribute('style', `right: ${this.popupPosition[popup].right}`);
           })
         }
-      }
-    }
+      },
+    },
   }
 </script>
 
@@ -153,7 +146,7 @@
     }
   }
 
-  .popup-references, .popup-research-design {
+  .popup-references, .popup-research-design, .popup-instructions {
     position: absolute;
     bottom: 80px;
 
@@ -218,7 +211,7 @@
     flex-flow: column;
   }
 
-  .popup-research-design {
+  .popup-research-design, .popup-instructions {
     min-height: 440px;
     max-height: 520px;
     min-width: 530px;
@@ -226,102 +219,15 @@
     padding: 28px;
   }
 
-  .popup-instructions {
+  .popup-instructions.no-slot-content {
     position: absolute;
     top: 0;
     left: 0;
+    bottom: auto;
+    background-color: transparent;
 
     width: 100%;
     height: 100%;
-
-    .PDF-section {
-      position: absolute;
-      top: 0;
-      left: 0;
-
-      width: 100%;
-      height: 100%;
-
-      overflow: hidden;
-      z-index: 15;
-
-      background-color: #525659;
-
-      .PDF-container {
-        position: absolute;
-        top: 0;
-        left: 8%;
-        right: 8%;
-        height: 100%;
-
-        > * {
-          width: 100%;
-          height: 100%;
-        }
-      }
-
-      .close-PDF-section {
-        width: 40px;
-        height: 40px;
-
-        position: absolute;
-        right: 30px;
-        top: 40px;
-        z-index: 100;
-
-        background-color: rgba(#000, .5);
-
-        &:before, &:after {
-          content: '';
-
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          margin-left: -.75px;
-          margin-top: -30%;
-          transform-origin: center;
-          width: 1.5px;
-          height: 60%;
-          background-color: #fff;
-          border-radius: 1.5px;
-        }
-        &:before {
-          transform: rotate(-45deg);
-        }
-
-        &:after {
-          transform: rotate(45deg);
-        }
-
-        &:active {
-          opacity: .5;
-        }
-      }
-    }
-  }
-
-  .PDF-warning {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    background-color: #fff;
-
-    h1 {
-      margin-top: 10%;
-      font-weight: normal;
-      font-family: 'Diaria Sans Pro', sans-serif;
-      color: #2c3e50;
-
-      text-align: center;
-
-      q {
-        font-weight: bold;
-      }
-
-    }
   }
 
 </style>

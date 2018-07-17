@@ -1,5 +1,6 @@
 import MtMenu from '@/components/mt-menu'
 import MtPopup from '@/components/mt-popup'
+import PdfPopup from '@/components/pdf-popup'
 
 const VueClmHelperMiTouch = {
   install(Vue, store, options) {
@@ -30,6 +31,7 @@ const VueClmHelperMiTouch = {
 
     Vue.component(MtMenu.name, MtMenu);
     Vue.component(MtPopup.name, MtPopup);
+    Vue.component(PdfPopup.name, PdfPopup);
   }
 };
 
