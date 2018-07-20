@@ -107,6 +107,13 @@ Prop | Type | Default | Description
   btnFaqCb | Function | `() => this.navigateTo('slide-faq')` | Callback for `FAQ button` 
   slidesToActiveAutoTransform | Number | `6` | If `slidesToActiveAutoTransform` >= `slides.length` then current slide list item will be moved to left side.
   flowsToActiveAutoTransform | Number | `6` | If `flowsToActiveAutoTransform` >= `flows.length` then current slide list item will be moved to left side.
+  
+  **:info: For deactivate necessary swiper, please set `slidesToActiveAutoTransform` or `flowsToActiveAutoTransform` to `0`.**
+
+```
+// Now slides and flows will not be a swipable.
+<mt-menu :slidesToActiveAutoTransform="0" :flowsToActiveAutoTransform="0"/>
+```
 
 ### mt-popup
 
@@ -117,6 +124,8 @@ Prop | Type | Default | Description
   instrPath | String | `'media/pdf/instruction.pdf'` | Path to `pdf` file which will open after click on `Instruction Button`, file must contain in `public/${instrPath}`
 
 ### pdf-popup
+
+**:warning: Show `pdf-popup` only with `v-if` directive.**
 
 Prop | Type | Default | Description
   --- | --- | --- |---

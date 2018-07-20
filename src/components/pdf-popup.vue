@@ -1,9 +1,10 @@
 <template>
-  <div class="PDF-section">
+  <div class="PDF-section" v-if="!hasPDFHelper">
     <div class="close-PDF-section" @click="_closePdf"></div>
 
-    <div class="PDF-container">
-      <object v-if="isExistInst" :data="instrPath" type="application/pdf"></object>
+    <div class="PDF-container" style="overflow:auto;-webkit-overflow-scrolling:touch">
+      <object v-if="isExistInst" :data="instrPath" type="application/pdf" width="100%" height="100%"></object>
+
       <section v-else class="PDF-warning">
         <h1>Include Your PDF file to <q>public/{{instrPath}}</q></h1>
       </section>
@@ -21,13 +22,17 @@
         required: true,
         validator: (value) => {
           return /\.pdf$/.test(value)
-        }
+        },
       },
       closePdf: {
         type: Function,
       },
     },
     computed: {
+      hasPDFHelper() {
+        return !!window.parent.PDFHelper
+      },
+
       isExistInst() {
         const http = new XMLHttpRequest();
         const url = `${this.instrPath}`;
@@ -47,6 +52,12 @@
         }
       },
     },
+
+    created() {
+      if (this.hasPDFHelper) {
+        window.parent.PDFHelper.OpenPDF(this.instrPath, window, true);
+      }
+    },
   }
 </script>
 
@@ -65,16 +76,11 @@
     background-color: #525659;
 
     .PDF-container {
-      position: absolute;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
       top: 0;
-      left: 8%;
-      right: 8%;
-      height: 100%;
-
-      > * {
-        width: 100%;
-        height: 100%;
-      }
     }
 
     .close-PDF-section {

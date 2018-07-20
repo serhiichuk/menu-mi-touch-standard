@@ -228,6 +228,12 @@
 
     width: 100%;
     height: 100%;
+
+    max-width: initial;
+    min-width: initial;
+    max-height: initial;
+    min-height: initial;
+    padding: 0;
   }
 
 </style>
