@@ -9,7 +9,9 @@
       <!-- Slides Links -->
       <swiper :options="swiperOption" ref="swiperSlides" class="slides">
         <swiper-slide v-for="sl in _slides" :key="sl.id"
-                      :class="{active: isCurrentSlide(sl.id)}">
+                      :class="{active: isCurrentSlide(sl.id), hidden: sl.isHidden}"
+                      :data-id="sl.id"
+        >
           <div v-html="sl.name" @click="navigateTo(sl.id)"></div>
         </swiper-slide>
       </swiper>
@@ -17,7 +19,9 @@
       <!-- Flow Links -->
       <swiper :options="swiperOption" ref="swiperFlows" class="flows">
         <swiper-slide v-for="sl in _flows" :key="sl.id"
-                      :class="{active: isCurrentFlow(sl.id)}">
+                      :class="{active: isCurrentFlow(sl.id), hidden: sl.isHidden}"
+                      :data-id="sl.id"
+        >
           <div v-html="sl.flowName || sl.name" @click="navigateTo(sl.id)"></div>
         </swiper-slide>
       </swiper>
@@ -53,6 +57,8 @@
       >
         <icon-faq/>
       </div>
+
+      <slot name="functional-buttons"></slot>
 
       <logo-sanofi class="logo-sanofi"/>
     </div>
@@ -385,6 +391,10 @@
 
           border-right: solid 1px;
           border-color: inherit;
+        }
+
+        &.hidden {
+          display: none;
         }
 
         &:last-child {
