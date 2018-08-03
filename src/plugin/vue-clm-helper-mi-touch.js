@@ -40,4 +40,5 @@ if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.use(VueClmHelperMiTouch)
 }
 
+
 export default VueClmHelperMiTouch;
