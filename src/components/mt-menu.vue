@@ -8,8 +8,8 @@
     <div class="nav-links">
       <!-- Slides Links -->
       <swiper :options="swiperOption" ref="swiperSlides" class="slides">
-        <swiper-slide v-for="sl in _slides" :key="sl.id"
-                      :class="{active: isCurrentSlide(sl.id), hidden: sl.isHidden}"
+        <swiper-slide v-for="sl in _slides" :key="sl.id" v-if="!sl.isHidden"
+                      :class="{active: isCurrentSlide(sl.id)}"
                       :data-id="sl.id"
         >
           <div v-html="sl.name" @click="navigateTo(sl.id)"></div>
@@ -67,7 +67,7 @@
 
 <script>
   import 'swiper/dist/css/swiper.css'
-  import {swiper, swiperSlide} from 'vue-awesome-swiper'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
   import iconHome from '../assets/home.svg'
   import iconReferences from '../assets/references.svg'
   import iconResearchDesign from '../assets/research-design.svg'
@@ -88,7 +88,7 @@
         type: Array,
       },
       flows: {
-        type: Array
+        type: Array,
       },
 
       btnInstrCb: {
@@ -101,11 +101,11 @@
 
       slidesToActiveAutoTransform: {
         type: Number,
-        default: 6
+        default: 6,
       },
       flowsToActiveAutoTransform: {
         type: Number,
-        default: 4
+        default: 4,
       },
     },
 
@@ -117,7 +117,7 @@
       iconResearchDesign,
       iconInstructions,
       iconFaq,
-      logoSanofi
+      logoSanofi,
     },
 
     data() {
@@ -128,9 +128,9 @@
           spaceBetween: 0,
           slidesOffsetAfter: 50,
           roundLengths: true,
-          threshold: 50
+          threshold: 50,
         },
-        instructions: false
+        instructions: false,
       }
     },
 
@@ -168,7 +168,8 @@
       },
 
       _btnFaqCb() {
-        return this.btnFaqCb || (() => this.navigateTo('slide-faq'))
+        const firstSlFaq = this.structure.filter(sl => /-(faq|faq_\w)$/.test(sl.id))[0];
+        return this.btnFaqCb || (() => this.navigateTo(firstSlFaq.id || 'slide-faq'))
       },
 
       // Swiper instances
@@ -195,7 +196,7 @@
 
       isVisibleMenu() {
         return this.currentFlow !== 'main' && (this._currentSlide !== this._mainSlide)
-      }
+      },
     },
 
     watch: {
@@ -203,7 +204,7 @@
         // Auto transform to active slide position, call after ready '_currentSlide'
         this.setSlidesActivePosition();
         this.setFlowsActivePosition();
-      }
+      },
     },
 
     methods: {
@@ -256,25 +257,25 @@
       getPopupBtnClasses(btn) {
         return {
           active: this.activePopup === btn,
-          disabled: !(this.popupData[btn] && Object.keys(this.popupData[btn]).length)
+          disabled: !(this.popupData[btn] && Object.keys(this.popupData[btn]).length),
         }
       },
 
       popupOpen(popup) {
         this.$store.commit('mi-touch/POPUP_SHOW', popup);
-      }
+      },
     },
 
     mounted() {
       [ // Set dataPreventTap="true" to following selectors:
         '.btn-main-slide',
         '.swiper-wrapper > *',
-        '.functional-buttons > *'
+        '.functional-buttons > *',
       ].forEach(selector => {
         Array.from(document.querySelectorAll(selector))
           .forEach(el => el.setAttribute('data-prevent-tap', 'true'))
       })
-    }
+    },
   }
 </script>
 
@@ -362,7 +363,7 @@
   .nav-links {
     position: absolute;
     left: 85px;
-    right: 350px;
+    right: 250px;
     width: auto;
 
     > * {

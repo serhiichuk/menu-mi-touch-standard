@@ -202,9 +202,10 @@
   }
 
   .popup-references {
-    width: 320px;
     min-height: 440px;
     max-height: 520px;
+    min-width: 320px;
+    max-width: 450px;
 
     padding: 32px;
     display: flex;
@@ -215,6 +216,7 @@
     min-height: 440px;
     max-height: 520px;
     min-width: 530px;
+    max-width: 800px;
 
     padding: 28px;
   }
