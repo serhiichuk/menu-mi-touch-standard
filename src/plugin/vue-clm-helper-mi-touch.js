@@ -4,13 +4,12 @@ import PdfPopup from '@/components/pdf-popup'
 
 const VueClmHelperMiTouch = {
   install(Vue, store, options) {
-
     if (!store) {
       throw new Error(`Please provide vuex store: "Vue.use(MiTouchPlugin, store)";`);
     }
 
     const state = {
-      activePopup: ''
+      activePopup: '',
     };
 
     const mutations = {
@@ -20,25 +19,31 @@ const VueClmHelperMiTouch = {
 
       POPUP_HIDE(state) {
         state.activePopup = ''
-      }
+      },
     };
+
+    Vue.mixin({
+      methods: {
+        $navigateTo: this.$navigateTo || this.navigateTo,
+        $openPdfIos: this.$openPdfIos || this.openPdfIos,
+      }
+    });
 
     store.registerModule('mi-touch', {
       namespaced: true,
       state,
-      mutations
+      mutations,
     });
 
     Vue.component(MtMenu.name, MtMenu);
     Vue.component(MtPopup.name, MtPopup);
     Vue.component(PdfPopup.name, PdfPopup);
-  }
+  },
 };
 
 // Automatic installation if Vue has been added to the global scope.
 if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.use(VueClmHelperMiTouch)
 }
-
 
 export default VueClmHelperMiTouch;

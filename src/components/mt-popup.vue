@@ -68,7 +68,9 @@
         return this.$store.state['mi-touch'].activePopup
       },
       _dataPopup() {
-        return this.dataPopup || this.$store.state.currentData.popup[this.activePopup] || {}
+        return this.dataPopup && this.dataPopup[this.activePopup]
+          || this.$store.state.currentData.popup[this.activePopup]
+          || {}
       },
       hasInstructionsSlot() {
         return !!this.$slots['instructions']

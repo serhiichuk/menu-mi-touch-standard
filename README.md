@@ -104,7 +104,7 @@ Prop | Type | Default | Description
   slides | Array | ``this.structure.filter(sl => new RegExp(`slide-${this.currentFlow}`).test(sl.id))`` | Filtered slides from current flow name, will rendering in top list in menu. 
   flows | Array | `this.structure.filter(sl => /\d_1$/.test(sl.id));` | Filtered slides from each first slide in each flow, will rendering in bottom list in menu. 
   btnInstrCb | Function | `() => this.popupOpen('instructions')` | Callback for `Instructions button` 
-  btnFaqCb | Function | `() => this.navigateTo('slide-faq')` | Callback for `FAQ button` 
+  btnFaqCb | Function | `() => this.navigateTo(<first slide-faq>)` | Callback for `FAQ button` 
   slidesToActiveAutoTransform | Number | `6` | If `slidesToActiveAutoTransform` >= `slides.length` then current slide list item will be moved to left side.
   flowsToActiveAutoTransform | Number | `6` | If `flowsToActiveAutoTransform` >= `flows.length` then current slide list item will be moved to left side.
   

@@ -1,7 +1,7 @@
 <template>
-  <section class="mt-menu" v-show="isVisibleMenu">
+  <section class="mt-menu" :class="{hidden: !isVisibleMenu}">
     <!-- Home btn -->
-    <div class="btn-main-slide" @click="navigateTo(_mainSlide.id)">
+    <div class="btn-main-slide" @click="$navigateTo(_mainSlide.id)">
       <icon-home/>
     </div>
 
@@ -12,7 +12,7 @@
                       :class="{active: isCurrentSlide(sl.id)}"
                       :data-id="sl.id"
         >
-          <div v-html="sl.name" @click="navigateTo(sl.id)"></div>
+          <div v-html="sl.name" @click="$navigateTo(sl.id)"></div>
         </swiper-slide>
       </swiper>
 
@@ -22,7 +22,7 @@
                       :class="{active: isCurrentFlow(sl.id), hidden: sl.isHidden}"
                       :data-id="sl.id"
         >
-          <div v-html="sl.flowName || sl.name" @click="navigateTo(sl.id)"></div>
+          <div v-html="sl.flowName || sl.name" @click="$navigateTo(sl.id)"></div>
         </swiper-slide>
       </swiper>
     </div>
@@ -169,7 +169,7 @@
 
       _btnFaqCb() {
         const firstSlFaq = this.structure.filter(sl => /-(faq|faq_\w)$/.test(sl.id))[0];
-        return this.btnFaqCb || (() => this.navigateTo(firstSlFaq.id || 'slide-faq'))
+        return this.btnFaqCb || (() => this.$navigateTo(firstSlFaq.id || 'slide-faq'))
       },
 
       // Swiper instances
@@ -493,6 +493,10 @@
         stroke: $menu_icons_color;
       }
     }
+  }
+
+  .hidden {
+    display: none;
   }
 
 </style>

@@ -1,15 +1,10 @@
 <template>
-  <div class="PDF-section" v-if="!hasPDFHelper">
+  <div class="PDF-section">
     <div class="close-PDF-section" @click="_closePdf"></div>
 
-    <div class="PDF-container" style="overflow:auto;-webkit-overflow-scrolling:touch">
-      <object v-if="isExistInst" :data="instrPath" type="application/pdf" width="100%" height="100%"></object>
-
-      <section v-else class="PDF-warning">
-        <h1>Include Your PDF file to <q>public/{{instrPath}}</q></h1>
-      </section>
+    <div class="PDF-container">
+      <object :data="instrPath" type="application/pdf" width="100%" height="100%"></object>
     </div>
-
   </div>
 </template>
 
@@ -28,21 +23,6 @@
         type: Function,
       },
     },
-    computed: {
-      hasPDFHelper() {
-        return !!window.parent.PDFHelper
-      },
-
-      isExistInst() {
-        const http = new XMLHttpRequest();
-        const url = `${this.instrPath}`;
-
-        http.open('HEAD', url, false);
-        http.send();
-
-        return http.status !== 404;
-      },
-    },
     methods: {
       _closePdf() {
         if (this.closePdf) {
@@ -51,12 +31,6 @@
           this.$store.commit('mi-touch/POPUP_HIDE')
         }
       },
-    },
-
-    created() {
-      if (this.hasPDFHelper) {
-        window.parent.PDFHelper.OpenPDF(this.instrPath, window, true);
-      }
     },
   }
 </script>
@@ -76,11 +50,9 @@
     background-color: #525659;
 
     .PDF-container {
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      top: 0;
+      margin: 0 auto;
+      width: 80%;
+      height: 100%;
     }
 
     .close-PDF-section {
@@ -119,30 +91,6 @@
       &:active {
         opacity: .5;
       }
-    }
-  }
-
-  .PDF-warning {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    background-color: #fff;
-
-    h1 {
-      margin-top: 10%;
-      font-weight: normal;
-      font-family: 'Diaria Sans Pro', sans-serif;
-      color: #2c3e50;
-
-      text-align: center;
-
-      q {
-        font-weight: bold;
-      }
-
     }
   }
 </style>
